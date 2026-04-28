@@ -1,26 +1,20 @@
 import { useState } from 'react';
 import type { UserProfile, Gender, AgeGroup, EmploymentStatus } from '../types';
-import { checkSurveyContact } from '../api';
+
 import styles from './Onboarding.module.css';
 
 interface Props {
   onComplete: (profile: UserProfile) => void;
-  onAlreadyCompleted: (userName: string, summary: any) => void;
 }
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const mobileRegex = /^[0-9]{10}$/;
 
-function validateContact(val: string): boolean {
-  return emailRegex.test(val) || mobileRegex.test(val);
-}
 
-export default function Onboarding({ onComplete, onAlreadyCompleted }: Props) {
+export default function Onboarding({ onComplete }: Props) {
   const [step, setStep] = useState(0);
   const [profile, setProfile] = useState<Partial<UserProfile>>({});
   const [contact, setContact] = useState('');
   const [contactError, setContactError] = useState('');
-  const [checking, setChecking] = useState(false);
+
 
   const set = (key: keyof UserProfile, val: string) => {
     setProfile(p => ({ ...p, [key]: val }));
@@ -28,26 +22,11 @@ export default function Onboarding({ onComplete, onAlreadyCompleted }: Props) {
 
   const next = () => setStep(s => s + 1);
 
-  const handleContactSubmit = async () => {
-    setContactError('');
-    if (!validateContact(contact.trim())) {
-      setContactError('Please enter a valid email or 10-digit mobile number');
-      return;
-    }
-    setChecking(true);
-    try {
-      const result = await checkSurveyContact(contact.trim());
-      if (result.completed && result.summary) {
-        onAlreadyCompleted(result.userName ?? profile.name ?? '', result.summary);
-        return;
-      }
-      onComplete({ ...profile, contact: contact.trim() } as UserProfile);
-    } catch {
-      // if check fails, proceed anyway
-      onComplete({ ...profile, contact: contact.trim() } as UserProfile);
-    } finally {
-      setChecking(false);
-    }
+  const handleContactSubmit = () => {
+    onComplete({
+      ...profile,
+      contact: contact.trim() || undefined
+    } as UserProfile);
   };
 
   return (
@@ -57,7 +36,7 @@ export default function Onboarding({ onComplete, onAlreadyCompleted }: Props) {
           <div className={styles.tagline}>Sample Sale — Quick Feedback</div>
 
           <div className={styles.progress}>
-            {[0, 1, 2, 3, 4].map(i => (
+            {[0, 1, 2, 3].map(i => (
                 <div key={i} className={`${styles.dot} ${i <= step ? styles.dotActive : ''}`} />
             ))}
           </div>
@@ -137,7 +116,7 @@ export default function Onboarding({ onComplete, onAlreadyCompleted }: Props) {
           {step === 4 && (
               <div className={styles.step}>
                 <h2 className={styles.q}>Your email or mobile?</h2>
-                <p className={styles.hint}>So we know you've already shared feedback next time</p>
+                <p className={styles.hint}>Optional — helps us recognise you next time</p>
                 <input
                     className={`${styles.input} ${contactError ? styles.inputError : ''}`}
                     type="text"
@@ -151,10 +130,9 @@ export default function Onboarding({ onComplete, onAlreadyCompleted }: Props) {
                 )}
                 <button
                     className={styles.btn}
-                    disabled={!contact.trim() || checking}
                     onClick={handleContactSubmit}
                 >
-                  {checking ? 'Checking...' : 'Start survey ✦'}
+                  {contact.trim() ? 'Continue →' : 'Skip →'}
                 </button>
               </div>
           )}

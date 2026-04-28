@@ -8,7 +8,7 @@ export interface UserProfile {
   gender: Gender;
   ageGroup: AgeGroup;
   employmentStatus: EmploymentStatus;
-  contact: string;
+  contact?: string;
 }
 
 // ── Outfit reel (original feature) ───────────────────────────────
@@ -46,7 +46,7 @@ export interface SurveyAnswer {
   cardId: string;
   section: string;
   statement: string;
-  answer: SurveyVote;
+  answer: SurveyVote | string;
   dwellTimeMs: number;
 }
 
@@ -54,14 +54,12 @@ export interface SurveySubmission {
   userProfile: UserProfile;
   sessionId: string;
   answers: SurveyAnswer[];
-  skippedCardIds: string[];
   incomeBracket: string;
   completedAt: string;
 }
 
 export interface SurveySummary {
   totalAnswered: number;
-  totalSkipped: number;
   yesCount: number;
   nopeCount: number;
   incomeBracket: string;

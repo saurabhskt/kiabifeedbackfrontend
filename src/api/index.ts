@@ -44,3 +44,23 @@ export const checkSurveyContact = async (contact: string): Promise<{
     throw err;
   }
 };
+export const submitComment = async (
+    sessionId: string,
+    text: string,
+    audioBlob: Blob | null,
+    mimeType: string,
+) => {
+  const formData = new FormData();
+  if (text.trim()) formData.append('text', text.trim());
+  if (audioBlob) {
+    const ext = mimeType.includes('mp4') ? 'mp4' : 'webm';
+    formData.append('audio', audioBlob, `voice-note.${ext}`);
+  }
+  const { data } = await api.post(
+      `/survey/${sessionId}/comment`,
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } },
+  );
+  return data;
+};
+

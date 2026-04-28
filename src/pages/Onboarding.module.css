@@ -1,34 +1,47 @@
+/* ═══════════════════════════════════════════════════
+   COMPONENT STYLES (mobile-first)
+   ═══════════════════════════════════════════════════ */
+
 .wrap {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;                 /* dynamic viewport */
+  min-height: 100vh;                  /* fallback */
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #FBEAF0 0%, #EEEDFE 100%);
   padding: 1rem;
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  box-sizing: border-box;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
-  padding: 2rem 1.75rem;
+  padding: 2rem 1.5rem;               /* slightly tighter sides */
   width: 100%;
   max-width: 380px;
   box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  box-sizing: border-box;
 }
 
 .logo {
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: #040037 ;
+  color: #040037;
   margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .tagline {
   font-size: 13px;
   color: #888780;
   margin-bottom: 1.5rem;
+  line-height: 1.4;
 }
 
 .progress {
@@ -43,23 +56,29 @@
   border-radius: 2px;
   background: #F1EFE8;
   transition: background 0.3s;
+  min-width: 0;                       /* allow flex shrink */
 }
 
-.dotActive { background: #040037 ; }
+.dotActive { background: #040037; }
 
-.step { display: flex; flex-direction: column; }
+.step {
+  display: flex;
+  flex-direction: column;
+}
 
 .q {
   font-size: 20px;
   font-weight: 600;
   color: #2C2C2A;
   margin-bottom: 6px;
+  line-height: 1.3;
 }
 
 .hint {
   font-size: 13px;
   color: #888780;
   margin-bottom: 1.25rem;
+  line-height: 1.4;
 }
 
 .input {
@@ -67,14 +86,16 @@
   padding: 12px 16px;
   border: 1.5px solid #D3D1C7;
   border-radius: 12px;
-  font-size: 15px;
+  font-size: 16px;                    /* 16px prevents iOS zoom */
   color: #2C2C2A;
   outline: none;
   margin-bottom: 1rem;
   transition: border-color 0.2s;
+  min-height: 44px;                   /* accessible touch target */
+  box-sizing: border-box;
 }
 
-.input:focus { border-color: #040037 ; }
+.input:focus { border-color: #040037; }
 
 .chips {
   display: flex;
@@ -84,20 +105,24 @@
 }
 
 .chip {
-  padding: 10px 18px;
+  padding: 10px 16px;
   border-radius: 999px;
   border: 1.5px solid #D3D1C7;
   background: #fff;
   font-size: 14px;
   color: #5F5E5A;
   transition: all 0.15s;
+  cursor: pointer;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
 }
 
-.chip:hover { border-color: #040037 ; color: #040037 ; }
+.chip:hover { border-color: #040037; color: #040037; }
 
 .chipActive {
   background: #FBEAF0;
-  border-color: #040037 ;
+  border-color: #040037;
   color: #020017;
   font-weight: 500;
 }
@@ -106,24 +131,205 @@
   width: 100%;
   padding: 14px;
   border-radius: 14px;
-  background: #040037 ;
+  background: #040037;
   color: #fff;
   font-size: 15px;
   font-weight: 500;
   border: none;
+  cursor: pointer;
   transition: background 0.2s, opacity 0.2s;
+  min-height: 44px;
 }
 
 .btn:hover:not(:disabled) { background: #020013; }
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.inputError {
-  border-color: #E24B4A;
-}
+.inputError { border-color: #E24B4A; }
 
 .errorMsg {
   font-size: 12px;
   color: #E24B4A;
   margin-top: -8px;
   margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.skipContactBtn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  background: transparent;
+  color: #888780;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: color 0.2s;
+  min-height: 40px;
+}
+
+.skipContactBtn:hover { color: #5F5E5A; }
+
+
+/* ═══════════════════════════════════════════════════
+   BREAKPOINTS
+   ═══════════════════════════════════════════════════ */
+
+/* ── Very small phones (< 360px) ── */
+@media (max-width: 359px) {
+  .card {
+    padding: 1.5rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .logo { font-size: 20px; }
+  .q    { font-size: 18px; }
+  .hint { font-size: 12px; }
+
+  .chip {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* ── Tablets & larger phones (≥ 640px) ── */
+@media (min-width: 640px) {
+  .wrap {
+    padding: 2rem;
+  }
+
+  .card {
+    max-width: 460px;
+    padding: 2.5rem 2.25rem;
+    border-radius: 28px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+  }
+
+  .logo { font-size: 26px; }
+  .tagline { font-size: 14px; margin-bottom: 2rem; }
+
+  .progress { margin-bottom: 2.5rem; }
+  .dot { height: 5px; border-radius: 3px; }
+
+  .q { font-size: 24px; margin-bottom: 8px; }
+  .hint { font-size: 14px; margin-bottom: 1.5rem; }
+
+  .input {
+    padding: 14px 18px;
+    font-size: 16px;
+    margin-bottom: 1.25rem;
+  }
+
+  .chip {
+    padding: 12px 22px;
+    font-size: 15px;
+  }
+
+  .btn {
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 16px;
+  }
+
+  .skipContactBtn {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* ── Desktop (≥ 1024px) ── */
+@media (min-width: 1024px) {
+  .card {
+    max-width: 480px;
+    padding: 3rem 2.5rem;
+  }
+
+  .q { font-size: 26px; }
+}
+
+/* ── Landscape phones with short height ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .wrap {
+    padding: 0.75rem;
+    align-items: flex-start;          /* prevent vertical center crop */
+  }
+
+  .card {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .progress { margin-bottom: 1rem; }
+  .tagline { margin-bottom: 1rem; }
+  .hint { margin-bottom: 0.75rem; }
+}
+
+
+/* ═══════════════════════════════════════════════════
+   INDEX / GLOBAL RESET
+   ═══════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --pink:     #D4537E;
+  --pink-lt:  #FBEAF0;
+  --green:    #1D9E75;
+  --green-lt: #E1F5EE;
+  --purple:   #7F77DD;
+  --purple-lt:#EEEDFE;
+  --purple-dk:#3C3489;
+  --gray-dk:  #2C2C2A;
+  --gray:     #888780;
+  --gray-lt:  #F1EFE8;
+  --white:    #ffffff;
+  --font:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;     /* prevent iOS font scaling */
+}
+
+body {
+  font-family: var(--font);
+  background: #f5f5f3;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+button { font-family: var(--font); cursor: pointer; border: none; }
+input, select, textarea { font-family: var(--font); }
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

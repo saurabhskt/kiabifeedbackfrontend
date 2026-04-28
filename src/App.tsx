@@ -1,30 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Onboarding from './pages/Onboarding';
 import SurveyFeed from './pages/SurveyFeed';
 import SurveySummaryScreen from './pages/SurveySummary';
-import AlreadyCompleted from './pages/AlreadyCompleted';
+
 import type { UserProfile, SurveySubmission, SurveySummary } from './types';
-import { submitSurvey } from './api';
+import {submitComment, submitSurvey} from './api';
 import './index.css';
 
-type Stage = 'onboarding' | 'survey' | 'summary' | 'already-completed';
+type Stage = 'onboarding' | 'survey' | 'summary';
+
+const SESSION_KEY = 'kiabi_stage';
+const PROFILE_KEY = 'kiabi_profile';
 
 export default function App() {
-  const [stage, setStage]             = useState<Stage>('onboarding');
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [stage, setStage]             = useState<Stage>(() => {
+    const saved = sessionStorage.getItem(SESSION_KEY);
+    return (saved as Stage) || 'onboarding';
+  });
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(() => {
+    const saved = sessionStorage.getItem(PROFILE_KEY);
+    try { return saved ? JSON.parse(saved) : null; } catch { return null; }
+  });
   const [summary, setSummary]         = useState<SurveySummary | null>(null);
-  const [prevUserName, setPrevUserName] = useState('');
+
+  // Keep sessionStorage in sync
+  useEffect(() => {
+    sessionStorage.setItem(SESSION_KEY, stage);
+  }, [stage]);
+
+  useEffect(() => {
+    if (userProfile) {
+      sessionStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
+    } else {
+      sessionStorage.removeItem(PROFILE_KEY);
+    }
+  }, [userProfile]);
 
   const handleRestart = () => {
+    sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(PROFILE_KEY);
     setStage('onboarding');
     setUserProfile(null);
     setSummary(null);
-  };
-
-  const handleAlreadyCompleted = (userName: string, prevSummary: SurveySummary) => {
-    setPrevUserName(userName);
-    setSummary(prevSummary);
-    setStage('already-completed');
   };
 
   return (
@@ -32,16 +49,22 @@ export default function App() {
         {stage === 'onboarding' && (
             <Onboarding
                 onComplete={p => { setUserProfile(p); setStage('survey'); }}
-                onAlreadyCompleted={handleAlreadyCompleted}
             />
         )}
         {stage === 'survey' && userProfile && (
             <SurveyFeed
                 userProfile={userProfile}
-                onSubmit={async (s: SurveySubmission) => {
-                  await submitSurvey(s);
+                onSubmit={async (s: SurveySubmission) => { await submitSurvey(s); }}
+                onComment={async (sessionId, text, audio, mimeType) => {
+                  await submitComment(sessionId, text, audio, mimeType);
                 }}
                 onRestart={handleRestart}
+            />
+        )}
+        {/* If page reloaded mid-survey without a profile, restart cleanly */}
+        {stage === 'survey' && !userProfile && (
+            <Onboarding
+                onComplete={p => { setUserProfile(p); setStage('survey'); }}
             />
         )}
         {stage === 'summary' && summary && userProfile && (
@@ -49,12 +72,6 @@ export default function App() {
                 summary={summary}
                 userProfile={userProfile}
                 onRestart={handleRestart}
-            />
-        )}
-        {stage === 'already-completed' && summary && (
-            <AlreadyCompleted
-                userName={prevUserName}
-                summary={summary}
             />
         )}
       </>

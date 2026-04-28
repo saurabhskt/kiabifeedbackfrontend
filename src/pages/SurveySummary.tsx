@@ -1,7 +1,6 @@
 import type { SurveySummary, UserProfile } from '../types';
 import styles from './SurveySummary.module.css';
 
-
 interface Props {
   summary: SurveySummary;
   userProfile: UserProfile;
@@ -34,12 +33,6 @@ export default function SurveySummaryScreen({ summary, userProfile, onRestart }:
               <div className={styles.statLbl}>Nope votes</div>
             </div>
           </div>
-
-          {summary.totalSkipped > 0 && (
-              <div className={styles.skippedNote}>
-                {summary.totalSkipped} questions auto-skipped based on your answers
-              </div>
-          )}
 
           <button className={styles.restartBtn} onClick={onRestart}>
             Done

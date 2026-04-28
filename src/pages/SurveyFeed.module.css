@@ -1,66 +1,124 @@
+/* ── Base / Mobile-first ─────────────────────────── */
 .phoneFrame {
-  width: 340px;
-  height: 680px;
-  border-radius: 44px;
-  border: 10px solid #1a1a1a;
+  width: 100%;
+  height: 100dvh;
+  height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
   background: #000;
   overflow: hidden;
   position: relative;
-  margin: 1.5rem auto;
   display: flex;
   flex-direction: column;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .progressBar {
-  position: absolute; top: 0; left: 0;
-  height: 3px; background: #D4537E;
-  transition: width 0.4s ease; z-index: 20;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: #D4537E;
+  transition: width 0.4s ease;
+  z-index: 20;
   border-radius: 0 2px 2px 0;
 }
 
 .statusBar {
-  position: absolute; top: 12px; left: 18px; right: 18px;
-  display: flex; justify-content: space-between; z-index: 20;
+  position: absolute;
+  top: max(12px, env(safe-area-inset-top));
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 20;
+  pointer-events: none;
 }
 
-.brand { color: rgba(255,255,255,0.85); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; }
-.counter { color: rgba(255,255,255,0.5); font-size: 10px; }
+.brand {
+  color: rgba(255,255,255,0.85);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
 
+.counter {
+  color: rgba(255,255,255,0.5);
+  font-size: 10px;
+}
+
+/* ── Side guide (yes / nope — left edge) ── */
 .sideGuide {
-  position: absolute; left: 14px; top: 50%;
-  transform: translateY(-50%); z-index: 10;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 3px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  pointer-events: none;
 }
 
-.sg      { font-size: 8px; color: rgba(255,255,255,0.22); }
-.sgArrow { font-size: 10px; color: rgba(255,255,255,0.25); }
+/* ── Back guide (back — right edge, only when canGoBack) ── */
+.backGuide {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.sg {
+  font-size: 8px;
+  color: rgba(255,255,255,0.22);
+}
+
+.sgArrow {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+}
 
 .deck {
   flex: 1;
   position: relative;
   overflow: hidden;
+  min-height: 0;
 }
 
 .bottomBar {
   background: rgba(0,0,0,0.85);
   border-top: 0.5px solid rgba(255,255,255,0.07);
-  padding: 8px 14px;
-  display: flex; flex-direction: column;
-  align-items: center; gap: 5px;
+  padding: 8px 14px max(8px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
 .dotsRow {
-  display: flex; gap: 3px;
-  flex-wrap: wrap; justify-content: center;
-  max-width: 280px;
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 260px;
 }
 
 .dot {
-  width: 5px; height: 5px; border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
   background: rgba(255,255,255,0.12);
-  transition: all 0.2s; flex-shrink: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .dotCurrent { background: #D4537E; transform: scale(1.4); }
@@ -68,10 +126,13 @@
 .dotSkipped { background: rgba(255,255,255,0.08); opacity: 0.4; }
 
 .sectionLabel {
-  font-size: 9px; color: rgba(255,255,255,0.3);
-  letter-spacing: 0.07em; text-transform: uppercase;
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
 }
 
+/* ── Error overlay ───────────────────────────────── */
 .errorOverlay {
   position: absolute;
   inset: 0;
@@ -80,7 +141,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 20px;
 }
 
 .errorBox {
@@ -89,14 +150,17 @@
   border-radius: 20px;
   padding: 24px 20px;
   width: 100%;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  box-sizing: border-box;
 }
 
 .errorIcon {
-  width: 48px; height: 48px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: rgba(226,75,74,0.15);
   border: 1.5px solid #F09595;
@@ -107,6 +171,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
+  flex-shrink: 0;
 }
 
 .errorTitle {
@@ -125,7 +190,7 @@
 
 .retryBtn {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   border-radius: 12px;
   background: #040037;
   color: #fff;
@@ -134,13 +199,14 @@
   border: none;
   cursor: pointer;
   transition: background 0.2s;
+  min-height: 44px;
 }
 
 .retryBtn:hover { background: #0a0060; }
 
 .skipBtn {
   width: 100%;
-  padding: 10px;
+  padding: 11px;
   border-radius: 12px;
   background: transparent;
   color: rgba(255,255,255,0.4);
@@ -148,6 +214,91 @@
   border: none;
   cursor: pointer;
   transition: color 0.2s;
+  min-height: 40px;
 }
 
 .skipBtn:hover { color: rgba(255,255,255,0.65); }
+
+
+/* ═══════════════════════════════════════════════════
+   BREAKPOINTS
+   ═══════════════════════════════════════════════════ */
+
+/* ── Larger phones (≥ 390px) ── */
+@media (min-width: 390px) {
+  .statusBar {
+    top: max(14px, env(safe-area-inset-top));
+    left: 22px;
+    right: 22px;
+  }
+
+  .brand, .counter { font-size: 11px; }
+
+  .sideGuide { left: 14px; gap: 4px; }
+  .backGuide { right: 14px; gap: 4px; }
+
+  .sg { font-size: 9px; }
+  .sgArrow { font-size: 11px; }
+
+  .dotsRow { gap: 4px; max-width: 300px; }
+  .dot { width: 6px; height: 6px; }
+  .sectionLabel { font-size: 10px; }
+  .bottomBar { padding: 10px 18px max(10px, env(safe-area-inset-bottom)); gap: 6px; }
+}
+
+/* ── Tablets / small desktop (≥ 640px) ── */
+@media (min-width: 640px) {
+  .phoneFrame {
+    max-width: 420px;
+    height: 85vh;
+    height: 85dvh;
+    margin-top: 7.5vh;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+  }
+
+  .statusBar { top: 18px; }
+  .brand { font-size: 12px; }
+  .counter { font-size: 12px; }
+  .sideGuide { left: 18px; }
+  .backGuide { right: 18px; }
+
+  .sg { font-size: 10px; }
+  .sgArrow { font-size: 12px; }
+
+  .bottomBar { padding: 12px 20px 14px; border-radius: 0 0 24px 24px; }
+  .dotsRow { max-width: 340px; gap: 5px; }
+  .dot { width: 7px; height: 7px; }
+  .sectionLabel { font-size: 11px; }
+
+  .errorBox { padding: 28px 24px; max-width: 340px; }
+  .errorTitle { font-size: 17px; }
+  .errorSub { font-size: 13px; }
+  .retryBtn { font-size: 15px; }
+}
+
+/* ── Landscape phones (short height) ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .phoneFrame {
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    margin-top: 0;
+    border-radius: 0;
+    border: none;
+  }
+
+  .sideGuide, .backGuide { display: none; }
+
+  .bottomBar { padding: 6px 14px; gap: 3px; }
+  .dotsRow { max-width: 200px; }
+  .dot { width: 4px; height: 4px; }
+  .errorBox { padding: 18px 16px; max-width: 280px; }
+  .errorIcon { width: 40px; height: 40px; font-size: 18px; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .progressBar, .dot, .retryBtn, .skipBtn { transition: none; }
+}

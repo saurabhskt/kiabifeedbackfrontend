@@ -1,8 +1,12 @@
-export type VoteType = 'yes' | 'nope';
+// cards.ts
 
-export interface BranchRule {
-  when: VoteType;       // if this answer is given...
-  skipToId: string;     // ...jump to this card id (skipping everything in between)
+export type VoteType = 'yes' | 'nope';
+export type CardType = 'binary' | 'choice' | 'scale';
+
+export interface ChoiceOption {
+  value: string;
+  label: string;
+  isOther?: boolean;
 }
 
 export interface SurveyCard {
@@ -12,45 +16,40 @@ export interface SurveyCard {
   bg: string;
   emoji: string;
   statement: string;
-  branch?: BranchRule;  // optional — if absent, always goes to next card
+  type?: CardType;           // default = 'binary'
+  // for type === 'choice'
+  options?: ChoiceOption[];
+  multiSelect?: boolean;
+  // for type === 'scale'
+  scaleMin?: number;
+  scaleMax?: number;
+  scaleLabels?: [string, string];
 }
 
 export const SURVEY_CARDS: SurveyCard[] = [
 
-  // ── DISCOVERY (5 cards) ──────────────────────────────────────────
+  // ── DISCOVERY ────────────────────────────────────────────────────
   {
     id: 'd1', section: 'Discovery', sectionColor: '#AFA9EC', bg: '#3C3489',
     emoji: '📱',
-    statement: 'Did a colleague or friend tell you about this sale on WhatsApp?',
-  },
-  {
-    id: 'd2', section: 'Discovery', sectionColor: '#AFA9EC', bg: '#534AB7',
-    emoji: '📸',
-    statement: 'Did you find out through KIABI India\'s Instagram or social media?',
-  },
-  {
-    id: 'd3', section: 'Discovery', sectionColor: '#AFA9EC', bg: '#26215C',
-    emoji: '🏢',
-    statement: 'Did you see the notice at Vataka Business Park or your office board?',
-  },
-  {
-    id: 'd4', section: 'Discovery', sectionColor: '#AFA9EC', bg: '#3C3489',
-    emoji: '🚶',
-    statement: 'Did you walk in after spotting a poster or banner outside?',
-  },
-  {
-    id: 'd5', section: 'Discovery', sectionColor: '#AFA9EC', bg: '#534AB7',
-    emoji: '🤝',
-    statement: 'Were you personally invited by someone from the KIABI team?',
+    type: 'choice',
+    multiSelect: true,
+    statement: 'How did you hear about this sale? (tick all that apply)',
+    options: [
+      { value: 'whatsapp',   label: 'WhatsApp from a colleague or friend' },
+      { value: 'instagram',  label: 'KIABI India\'s Instagram / social media' },
+      { value: 'office',     label: 'Notice at Vatika Business Park / office board' },
+      { value: 'banner',     label: 'Poster or banner outside' },
+      { value: 'kiabi_team', label: 'Personally invited by the KIABI team' },
+      { value: 'other',      label: 'Other', isOther: true },
+    ],
   },
 
-  // ── SECTIONS SHOPPED (6 cards) ───────────────────────────────────
+  // ── SECTIONS SHOPPED ─────────────────────────────────────────────
   {
     id: 's1', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#993556',
     emoji: '👀',
-    statement: 'Were you mostly just browsing today — without any intention to buy?',
-    // If yes (just browsing) → skip all fit/sizing cards, go straight to style perception
-    branch: { when: 'yes', skipToId: 'f1_skip' },
+    statement: 'Were you mostly just browsing today?',
   },
   {
     id: 's2', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#72243E',
@@ -58,17 +57,17 @@ export const SURVEY_CARDS: SurveyCard[] = [
     statement: 'Did you shop from the Women\'s section today?',
   },
   {
-    id: 's3', section: 'Sections Shopped', sectionColor: '#040037', bg: '#040037',
+    id: 's3', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#040037',
     emoji: '👔',
     statement: 'Did you browse or buy from the Men\'s section?',
   },
   {
-    id: 's4', section: 'Sections Shopped', sectionColor: '#040037', bg: '#040037',
+    id: 's4', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#040037',
     emoji: '👧',
     statement: 'Did you pick up anything from the Kids\' Girls section?',
   },
   {
-    id: 's5', section: 'Sections Shopped', sectionColor: '#040037', bg: '#040037',
+    id: 's5', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#040037',
     emoji: '👦',
     statement: 'Did you shop from the Kids\' Boys section?',
   },
@@ -78,111 +77,63 @@ export const SURVEY_CARDS: SurveyCard[] = [
     statement: 'Did you pick up anything from the Baby or Newborn section?',
   },
 
-  // ── FIT & SIZING (3 cards) ───────────────────────────────────────
-  // Card s1 nope-path leads here; yes-path (just browsing) skips to st1
+  // ── BRAND AWARENESS ──────────────────────────────────────────────
   {
-    id: 'f1', section: 'Fit & Sizing', sectionColor: '#9FE1CB', bg: '#085041',
-    emoji: '👕',
-    statement: 'Did you try on clothes before deciding to buy?',
-    // If nope (didn't try anything) → skip fit detail, go to size availability
-    branch: { when: 'nope', skipToId: 'a1' },
-  },
-  {
-    id: 'f2', section: 'Fit & Sizing', sectionColor: '#9FE1CB', bg: '#0F6E56',
-    emoji: '📐',
-    statement: 'Did the clothes you tried feel true to your usual size?',
-  },
-  {
-    id: 'f3', section: 'Fit & Sizing', sectionColor: '#9FE1CB', bg: '#04342C',
-    emoji: '↕️',
-    statement: 'Did you have to size up or down from what you normally wear?',
-  },
-
-  // ── SIZE AVAILABILITY (2 cards) ──────────────────────────────────
-  // "just browsing" path also skips here — f1_skip acts as alias pointing to a1
-  {
-    id: 'a1', section: 'Size Availability', sectionColor: '#85B7EB', bg: '#0C447C',
-    emoji: '🔍',
-    statement: 'Did you find your size easily in the styles you liked?',
-    // If yes (found size easily) → skip the "couldn't find size" follow-up
-    branch: { when: 'yes', skipToId: 'st1' },
-  },
-  {
-    id: 'a2', section: 'Size Availability', sectionColor: '#85B7EB', bg: '#185FA5',
-    emoji: '😔',
-    statement: 'Were there styles you loved but couldn\'t get in your size?',
-  },
-
-  // ── STYLE PERCEPTION (4 cards) ───────────────────────────────────
-  // "just browsing" skip target + normal flow both land here (id: st1)
-  {
-    id: 'st1', section: 'Style Perception', sectionColor: '#EF9F27', bg: '#633806',
-    emoji: '✨',
-    statement: 'Do you find KIABI\'s styles trendy and fashionable?',
-  },
-  {
-    id: 'st2', section: 'Style Perception', sectionColor: '#EF9F27', bg: '#854F0B',
-    emoji: '🛋️',
-    statement: 'Do the clothes feel comfortable enough for everyday Indian wear?',
-  },
-  {
-    id: 'st3', section: 'Style Perception', sectionColor: '#EF9F27', bg: '#412402',
-    emoji: '👨‍👩‍👧',
-    statement: 'Do you feel KIABI works well for the whole family — not just one age group?',
-  },
-  {
-    id: 'st4', section: 'Style Perception', sectionColor: '#EF9F27', bg: '#633806',
-    emoji: '🌍',
-    statement: 'Do some styles feel too European or not suited to Indian taste?',
-  },
-
-  // ── PRICING (3 cards) ────────────────────────────────────────────
-  {
-    id: 'p1', section: 'Pricing', sectionColor: '#F0997B', bg: '#712B13',
-    emoji: '💰',
-    statement: 'Did the sample sale prices feel like genuinely great value?',
-    // If yes → skip "expecting bigger discount" card
-    branch: { when: 'yes', skipToId: 'p3' },
-  },
-  {
-    id: 'p2', section: 'Pricing', sectionColor: '#F0997B', bg: '#993C1D',
-    emoji: '🤔',
-    statement: 'Were you expecting a bigger discount than what was offered?',
-  },
-  {
-    id: 'p3', section: 'Pricing', sectionColor: '#F0997B', bg: '#4A1B0C',
+    id: 'k1', section: 'Brand Awareness', sectionColor: '#F5C97A', bg: '#8B5E15',
     emoji: '🏷️',
-    statement: 'Would you pay these prices at a regular KIABI store — not just a sale?',
+    statement: 'Did you know KIABI before visiting this sale?',
   },
 
-  // ── COMPETITORS (5 cards) ────────────────────────────────────────
+  // ── STYLE PERCEPTION ─────────────────────────────────────────────
   {
-    id: 'c1', section: 'Competitors', sectionColor: '#97C459', bg: '#27500A',
+    id: 'st1', section: 'Style Perception', sectionColor: '#93D9ED', bg: '#0E5F75',
+    emoji: '✨',
+    type: 'choice',
+    multiSelect: true,
+    statement: 'How would you describe KIABI\'s styles? (pick up to 2)',
+    options: [
+      { value: 'trendy',    label: 'Trendy & fashionable' },
+      { value: 'casual',    label: 'Everyday casual / comfortable' },
+      { value: 'family',    label: 'Family-friendly' },
+      { value: 'european',  label: 'Too European / not for Indian taste' },
+      { value: 'basic',     label: 'Basic / nothing special' },
+      { value: 'other',     label: 'Other', isOther: true },
+    ],
+  },
+
+  // ── PRICE PERCEPTION ─────────────────────────────────────────────
+  {
+    id: 'p1', section: 'Price Perception', sectionColor: '#A8E6A3', bg: '#2B6B26',
+    emoji: '💰',
+    type: 'choice',
+    multiSelect: false,
+    statement: 'What did you think of the prices (MRP) at the sale?',
+    options: [
+      { value: 'excellent', label: 'Excellent value' },
+      { value: 'fair',      label: 'Fair / reasonable' },
+      { value: 'okay',      label: 'Okay, expected more discount' },
+      { value: 'high',      label: 'Too high even at sample sale prices' },
+    ],
+  },
+
+  // ── SHOPPING HABITS ──────────────────────────────────────────────
+  {
+    id: 'sh1', section: 'Shopping Habits', sectionColor: '#F0A87A', bg: '#7A3010',
     emoji: '🛒',
-    statement: 'Do you regularly shop at Indian chains like Zudio, Max or Westside?',
-  },
-  {
-    id: 'c2', section: 'Competitors', sectionColor: '#97C459', bg: '#3B6D11',
-    emoji: '🌐',
-    statement: 'Do you shop at international brands like H&M, Zara or Uniqlo?',
-  },
-  {
-    id: 'c3', section: 'Competitors', sectionColor: '#97C459', bg: '#173404',
-    emoji: '📦',
-    statement: 'Is Myntra or Ajio your main place to buy clothes — mostly online?',
-  },
-  {
-    id: 'c4', section: 'Competitors', sectionColor: '#97C459', bg: '#27500A',
-    emoji: '🏪',
-    statement: 'Do you shop at local markets like Sarojini Nagar or Lajpat Nagar?',
-  },
-  {
-    id: 'c5', section: 'Competitors', sectionColor: '#97C459', bg: '#3B6D11',
-    emoji: '👑',
-    statement: 'Do you buy premium brands like Tommy Hilfiger, GAP or Levi\'s?',
+    type: 'choice',
+    multiSelect: true,
+    statement: 'Where do you usually shop for clothes? (tick all that apply)',
+    options: [
+      { value: 'mass',    label: 'Reliance Trends / Max / Pantaloons / Westside / Zudio' },
+      { value: 'intl',    label: 'H&M / Zara / Uniqlo / Marks & Spencer' },
+      { value: 'online',  label: 'Myntra / Ajio (online only)' },
+      { value: 'local',   label: 'Local markets (Sarojini, Lajpat, etc.)' },
+      { value: 'premium', label: 'Premium brands (Tommy Hilfiger, GAP, Levi\'s, etc.)' },
+      { value: 'other',   label: 'Other', isOther: true },
+    ],
   },
 
-  // ── MYNTRA INTENT (2 cards) ──────────────────────────────────────
+  // ── MYNTRA INTENT ────────────────────────────────────────────────
   {
     id: 'm1', section: 'Myntra Intent', sectionColor: '#B4B2A9', bg: '#444441',
     emoji: '📲',
@@ -191,13 +142,21 @@ export const SURVEY_CARDS: SurveyCard[] = [
   {
     id: 'm2', section: 'Myntra Intent', sectionColor: '#B4B2A9', bg: '#2C2C2A',
     emoji: '🛍️',
-    statement: 'After today\'s experience, would you shop KIABI on Myntra?',
+    type: 'scale',
+    scaleMin: 1,
+    scaleMax: 5,
+    scaleLabels: ['Very unlikely', 'Very likely'],
+    statement: 'After today, how likely are you to shop KIABI on Myntra?',
   },
 
-  // ── RECOMMENDATION (2 cards) ─────────────────────────────────────
+  // ── RECOMMENDATION ───────────────────────────────────────────────
   {
     id: 'r1', section: 'Recommendation', sectionColor: '#85B7EB', bg: '#185FA5',
     emoji: '📣',
+    type: 'scale',
+    scaleMin: 0,
+    scaleMax: 10,
+    scaleLabels: ['Not at all', 'Definitely'],
     statement: 'Would you recommend KIABI to a friend or colleague?',
   },
   {
@@ -206,29 +165,24 @@ export const SURVEY_CARDS: SurveyCard[] = [
     statement: 'Would you come back to the next KIABI sample sale?',
   },
 
-  // ── INCOME RANGE (3 cards — branching pyramid) ───────────────────
+  // ── INCOME RANGE ─────────────────────────────────────────────────
   {
     id: 'i1', section: 'Income Range', sectionColor: '#FAC775', bg: '#854F0B',
     emoji: '💼',
-    statement: 'Is your monthly household income above ₹1,00,000?',
-    // Nope → below ₹1L bracket confirmed → skip i2 & i3, go to overall
-    branch: { when: 'nope', skipToId: 'o1' },
-  },
-  {
-    id: 'i2', section: 'Income Range', sectionColor: '#FAC775', bg: '#633806',
-    emoji: '📊',
-    statement: 'Is your monthly household income above ₹2,00,000?',
-    // Nope → ₹1L–₹2L bracket confirmed → skip i3, go to overall
-    branch: { when: 'nope', skipToId: 'o1' },
-  },
-  {
-    id: 'i3', section: 'Income Range', sectionColor: '#FAC775', bg: '#412402',
-    emoji: '💎',
-    statement: 'Is your monthly household income above ₹3,50,000?',
-    // Either answer → go to overall (yes = above 3.5L, nope = 2L–3.5L)
+    type: 'choice',
+    multiSelect: false,
+    statement: 'What is your approximate monthly household income? (optional)',
+    options: [
+      { value: 'below_50k',  label: 'Below ₹50,000' },
+      { value: '50k_1L',     label: '₹50,000 – ₹1,00,000' },
+      { value: '1L_2L',      label: '₹1,00,000 – ₹2,00,000' },
+      { value: '2L_3.5L',    label: '₹2,00,000 – ₹3,50,000' },
+      { value: 'above_3.5L', label: 'Above ₹3,50,000' },
+      { value: 'prefer_not', label: 'Prefer not to say' },
+    ],
   },
 
-  // ── OVERALL (2 cards) ────────────────────────────────────────────
+  // ── OVERALL ──────────────────────────────────────────────────────
   {
     id: 'o1', section: 'Overall', sectionColor: '#AFA9EC', bg: '#3C3489',
     emoji: '⭐',
@@ -241,44 +195,17 @@ export const SURVEY_CARDS: SurveyCard[] = [
   },
 ];
 
-// Build an id → index map for O(1) lookups
 export const CARD_INDEX: Record<string, number> = {};
 SURVEY_CARDS.forEach((c, i) => { CARD_INDEX[c.id] = i; });
 
-/**
- * Given the current card id and the vote just cast, return the index
- * of the next card to show. Applies branch rules and skips accordingly.
- * Returns -1 when the survey is complete.
- */
-export function getNextIndex(currentId: string, vote: VoteType): number {
-  const currentIdx = CARD_INDEX[currentId];
-  const card = SURVEY_CARDS[currentIdx];
-
-  // Special alias: "just browsing" yes-path skips to st1 via id 'f1_skip'
-  // We encode this as pointing to st1 directly
-  let targetId: string | null = null;
-
-  if (card.branch && card.branch.when === vote) {
-    targetId = card.branch.skipToId === 'f1_skip' ? 'st1' : card.branch.skipToId;
-  }
-
-  if (targetId) {
-    const targetIdx = CARD_INDEX[targetId];
-    return targetIdx !== undefined ? targetIdx : -1;
-  }
-
-  // No branch → simply go to next card
-  const next = currentIdx + 1;
-  return next < SURVEY_CARDS.length ? next : -1;
+/** Always advances sequentially. Returns -1 when survey is complete. */
+export function getNextIndex(currentId: string): number {
+  const idx = CARD_INDEX[currentId];
+  const next = idx + 1;
+  return next >= SURVEY_CARDS.length ? -1 : next;
 }
 
-/** Derive income bracket from i1/i2/i3 answers */
-export function deriveIncomeBracket(
-  answers: Record<string, VoteType>
-): string {
-  if (answers['i1'] === 'nope') return 'below_1L';
-  if (answers['i2'] === 'nope') return '1L_2L';
-  if (answers['i3'] === 'nope') return '2L_3.5L';
-  if (answers['i3'] === 'yes')  return 'above_3.5L';
-  return 'not_answered';
+/** Derives income bracket from the i1 choice card answer value. */
+export function deriveIncomeBracket(answerMap: Record<string, string>): string {
+  return answerMap['i1'] ?? 'not_answered';
 }
