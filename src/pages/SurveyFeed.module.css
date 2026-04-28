@@ -1,0 +1,153 @@
+.phoneFrame {
+  width: 340px;
+  height: 680px;
+  border-radius: 44px;
+  border: 10px solid #1a1a1a;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+  margin: 1.5rem auto;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.progressBar {
+  position: absolute; top: 0; left: 0;
+  height: 3px; background: #D4537E;
+  transition: width 0.4s ease; z-index: 20;
+  border-radius: 0 2px 2px 0;
+}
+
+.statusBar {
+  position: absolute; top: 12px; left: 18px; right: 18px;
+  display: flex; justify-content: space-between; z-index: 20;
+}
+
+.brand { color: rgba(255,255,255,0.85); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; }
+.counter { color: rgba(255,255,255,0.5); font-size: 10px; }
+
+.sideGuide {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+}
+
+.sg      { font-size: 8px; color: rgba(255,255,255,0.22); }
+.sgArrow { font-size: 10px; color: rgba(255,255,255,0.25); }
+
+.deck {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.bottomBar {
+  background: rgba(0,0,0,0.85);
+  border-top: 0.5px solid rgba(255,255,255,0.07);
+  padding: 8px 14px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 5px;
+}
+
+.dotsRow {
+  display: flex; gap: 3px;
+  flex-wrap: wrap; justify-content: center;
+  max-width: 280px;
+}
+
+.dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  transition: all 0.2s; flex-shrink: 0;
+}
+
+.dotCurrent { background: #D4537E; transform: scale(1.4); }
+.dotDone    { background: rgba(212,83,126,0.45); }
+.dotSkipped { background: rgba(255,255,255,0.08); opacity: 0.4; }
+
+.sectionLabel {
+  font-size: 9px; color: rgba(255,255,255,0.3);
+  letter-spacing: 0.07em; text-transform: uppercase;
+}
+
+.errorOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.errorBox {
+  background: #1a1a1a;
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 20px;
+  padding: 24px 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.errorIcon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(226,75,74,0.15);
+  border: 1.5px solid #F09595;
+  color: #F09595;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.errorTitle {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.errorSub {
+  color: rgba(255,255,255,0.45);
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.retryBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: #040037;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.retryBtn:hover { background: #0a0060; }
+
+.skipBtn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.skipBtn:hover { color: rgba(255,255,255,0.65); }

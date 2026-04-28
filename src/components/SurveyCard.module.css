@@ -1,0 +1,107 @@
+.card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 26px 90px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.card:active { cursor: grabbing; }
+
+.exit_up   { animation: exitUp   0.38s cubic-bezier(.4,0,.2,1) forwards; }
+.exit_down { animation: exitDown 0.38s cubic-bezier(.4,0,.2,1) forwards; }
+.enter_up  { animation: enterUp  0.38s cubic-bezier(.4,0,.2,1) forwards; }
+.standby   { transform: translateY(100%); }
+
+@keyframes exitUp   { to { transform: translateY(-115%); opacity: 0; } }
+@keyframes exitDown { to { transform: translateY(115%);  opacity: 0; } }
+@keyframes enterUp  { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.sectionPill {
+  position: absolute;
+  top: 52px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 9px;
+  padding: 3px 12px;
+  letter-spacing: 0.09em;
+  background: rgba(0,0,0,0.2);
+}
+
+.emoji {
+  font-size: 58px;
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.statement {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.hints {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.hintYes, .hintNope {
+  font-size: 11px;
+  padding: 7px 20px;
+  border-radius: 999px;
+  border: 1px solid;
+}
+
+.hintYes {
+  background: rgba(29,158,117,0.18);
+  border-color: rgba(93,202,165,0.45);
+  color: #5DCAA5;
+}
+
+.hintNope {
+  background: rgba(226,75,74,0.14);
+  border-color: rgba(240,149,149,0.35);
+  color: #F09595;
+}
+
+.stamp {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 10px 26px;
+  border-radius: 10px;
+  border: 2.5px solid;
+  letter-spacing: 0.09em;
+  pointer-events: none;
+  animation: stampPop 0.15s ease;
+}
+
+@keyframes stampPop {
+  from { transform: translate(-50%,-50%) scale(0.65); }
+  to   { transform: translate(-50%,-50%) scale(1); }
+}
+
+.stampYes {
+  top: 72px;
+  color: #5DCAA5;
+  border-color: #5DCAA5;
+  background: rgba(29,158,117,0.16);
+}
+.stampNope {
+  bottom: 110px;
+  color: #F09595;
+  border-color: #F09595;
+  background: rgba(226,75,74,0.13);
+}

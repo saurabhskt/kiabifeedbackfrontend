@@ -1,0 +1,84 @@
+.wrap {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #E1F5EE 0%, #EEEDFE 100%);
+  padding: 1rem;
+}
+
+.card {
+  background: #fff; border-radius: 24px;
+  padding: 2rem 1.75rem; width: 100%; max-width: 380px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+  display: flex; flex-direction: column; align-items: center;
+}
+
+.logo {
+  font-size: 16px; font-weight: 700; letter-spacing: 0.12em;
+  color: #040037 ; margin-bottom: 1.25rem; align-self: flex-start;
+}
+
+.heroIcon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #E1F5EE; color: #1D9E75; font-size: 26px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.title { font-size: 20px; font-weight: 600; color: #2C2C2A; margin-bottom: 6px; text-align: center; }
+.sub   { font-size: 13px; color: #888780; text-align: center; margin-bottom: 1.25rem; line-height: 1.6; }
+
+.statsRow { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; width: 100%; margin-bottom: 12px; }
+
+.statBox {
+  background: #F1EFE8; border-radius: 14px;
+  padding: 12px 8px; text-align: center;
+  border: 1.5px solid transparent;
+}
+
+.statNum { font-size: 20px; font-weight: 600; color: #2C2C2A; margin-bottom: 3px; }
+.statLbl { font-size: 10px; color: #888780; }
+
+.skippedNote {
+  font-size: 11px; color: #888780; text-align: center;
+  background: #F1EFE8; border-radius: 8px;
+  padding: 6px 12px; margin-bottom: 1.25rem; width: 100%;
+}
+
+.sections { width: 100%; margin-bottom: 1rem; }
+
+.sectionsTitle {
+  font-size: 11px; font-weight: 500; color: #888780;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.sectionRow {
+  display: flex; align-items: center;
+  gap: 8px; padding: 7px 0;
+  border-bottom: 0.5px solid #F1EFE8;
+}
+.sectionRow:last-child { border-bottom: none; }
+
+.sectionName { font-size: 11px; color: #5F5E5A; min-width: 100px; }
+
+.barTrack {
+  flex: 1; height: 5px; background: #F1EFE8;
+  border-radius: 999px; overflow: hidden;
+}
+
+.barFill { height: 100%; background: #1D9E75; border-radius: 999px; }
+.sectionPct { font-size: 11px; color: #5F5E5A; min-width: 32px; text-align: right; }
+
+.incomePill {
+  background: #FAEEDA; color: #633806;
+  font-size: 11px; padding: 6px 16px;
+  border-radius: 999px; margin-bottom: 1.25rem;
+}
+
+.restartBtn {
+  width: 100%; padding: 14px; border-radius: 14px;
+  background: #2C2C2A; color: #fff;
+  font-size: 14px; font-weight: 500; border: none;
+  cursor: pointer; transition: background 0.2s;
+}
+.restartBtn:hover { background: #444441; }

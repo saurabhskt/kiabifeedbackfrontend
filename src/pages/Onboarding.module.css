@@ -1,0 +1,129 @@
+.wrap {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FBEAF0 0%, #EEEDFE 100%);
+  padding: 1rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2rem 1.75rem;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #040037 ;
+  margin-bottom: 4px;
+}
+
+.tagline {
+  font-size: 13px;
+  color: #888780;
+  margin-bottom: 1.5rem;
+}
+
+.progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 2rem;
+}
+
+.dot {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: #F1EFE8;
+  transition: background 0.3s;
+}
+
+.dotActive { background: #040037 ; }
+
+.step { display: flex; flex-direction: column; }
+
+.q {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2C2C2A;
+  margin-bottom: 6px;
+}
+
+.hint {
+  font-size: 13px;
+  color: #888780;
+  margin-bottom: 1.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #D3D1C7;
+  border-radius: 12px;
+  font-size: 15px;
+  color: #2C2C2A;
+  outline: none;
+  margin-bottom: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus { border-color: #040037 ; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.chip {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #D3D1C7;
+  background: #fff;
+  font-size: 14px;
+  color: #5F5E5A;
+  transition: all 0.15s;
+}
+
+.chip:hover { border-color: #040037 ; color: #040037 ; }
+
+.chipActive {
+  background: #FBEAF0;
+  border-color: #040037 ;
+  color: #020017;
+  font-weight: 500;
+}
+
+.btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: #040037 ;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.btn:hover:not(:disabled) { background: #020013; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.inputError {
+  border-color: #E24B4A;
+}
+
+.errorMsg {
+  font-size: 12px;
+  color: #E24B4A;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}

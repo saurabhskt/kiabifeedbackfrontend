@@ -1,0 +1,252 @@
+.phoneFrame {
+  width: 340px;
+  height: 640px;
+  border-radius: 44px;
+  border: 10px solid #1a1a1a;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+  margin: 2rem auto;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.progressBar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px;
+  background: #D4537E;
+  transition: width 0.4s ease;
+  z-index: 10;
+  border-radius: 0 2px 2px 0;
+}
+
+.statusBar {
+  position: absolute;
+  top: 12px; left: 16px; right: 16px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+.brandLabel {
+  color: rgba(255,255,255,0.9);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.counter {
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+}
+
+.reelContainer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.reelContainer:active { cursor: grabbing; }
+
+.reel {
+  position: absolute;
+  inset: 0;
+}
+
+.reelTop { z-index: 2; }
+
+/* Next card sits just below, out of view */
+.reelNext {
+  transform: translateY(100%);
+  z-index: 1;
+}
+
+/* ── Exit animations ── */
+
+/* Love: card flies UP and off screen */
+.exitUp {
+  animation: flyUp 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes flyUp {
+  0%   { transform: translateY(0)    scale(1);    opacity: 1; }
+  60%  { transform: translateY(-55%) scale(0.96); opacity: 0.7; }
+  100% { transform: translateY(-110%) scale(0.92); opacity: 0; }
+}
+
+/* Nope: card drops DOWN and off screen */
+.exitDown {
+  animation: flyDown 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes flyDown {
+  0%   { transform: translateY(0)    scale(1);    opacity: 1; }
+  60%  { transform: translateY(55%)  scale(0.96); opacity: 0.7; }
+  100% { transform: translateY(110%) scale(0.92); opacity: 0; }
+}
+
+/* ── Next card entrance — always slides up from below ── */
+.reelEnter {
+  animation: slideInUp 0.38s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideInUp {
+  0%   { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+
+.reelBg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+}
+
+.reelOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%);
+}
+
+.reelContent {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 16px 16px 20px;
+  z-index: 3;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 9px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.07em;
+  margin-bottom: 7px;
+}
+
+.outfitName {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.outfitMeta {
+  color: rgba(255,255,255,0.65);
+  font-size: 11px;
+}
+
+.stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: 3px solid;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+  animation: stampPop 0.15s ease;
+}
+
+@keyframes stampPop {
+  from { transform: translate(-50%, -50%) scale(0.7); }
+  to   { transform: translate(-50%, -50%) scale(1); }
+}
+
+.stampLove { color: #5DCAA5; border-color: #5DCAA5; background: rgba(29,158,117,0.1); }
+.stampNope { color: #F09595; border-color: #F09595; background: rgba(226,75,74,0.1); }
+
+.hintArrows {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.arrow { color: rgba(255,255,255,0.45); font-size: 11px; }
+.arrowLabel { color: rgba(255,255,255,0.3); font-size: 9px; }
+
+.actions {
+  position: absolute;
+  right: 14px;
+  bottom: 64px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.actionBtn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.actionBtn:hover { background: rgba(255,255,255,0.28); }
+.actionBtn:active { transform: scale(0.88); }
+.actionBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.actionLove { background: rgba(29, 158, 117, 0.25); }
+.actionLove:hover { background: rgba(29, 158, 117, 0.45); }
+
+.actionNope { background: rgba(226, 75, 74, 0.25); }
+.actionNope:hover { background: rgba(226, 75, 74, 0.45); }
+
+.dots {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 5;
+}
+
+.dotIndicator {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all 0.2s;
+}
+
+.dotActive { background: #fff; transform: scale(1.5); }
+.dotDone { background: #D4537E; }
+
+.streakBar {
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 0.5px solid rgba(255,255,255,0.08);
+}
+
+.streakItem { font-size: 13px; font-weight: 500; }
+.streakDivider { color: rgba(255,255,255,0.3); font-size: 13px; }
