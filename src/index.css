@@ -1,36 +1,51 @@
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 :root {
-  --pink:    #D4537E;
-  --pink-lt: #FBEAF0;
-  --green:   #1D9E75;
-  --green-lt:#E1F5EE;
-  --purple:  #7F77DD;
+  --pink:     #D4537E;
+  --pink-lt:  #FBEAF0;
+  --green:    #1D9E75;
+  --green-lt: #E1F5EE;
+  --purple:   #7F77DD;
   --purple-lt:#EEEDFE;
   --purple-dk:#3C3489;
-  --gray-dk: #2C2C2A;
-  --gray:    #888780;
-  --gray-lt: #F1EFE8;
-  --white:   #ffffff;
-  --font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --gray-dk:  #2C2C2A;
+  --gray:     #888780;
+  --gray-lt:  #F1EFE8;
+  --white:    #ffffff;
+  --font:     -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font);
   background: #f5f5f3;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  min-height: 100dvh;
+  /* ✅ No flex centering here — each page (survey vs admin) handles its own layout */
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  min-height: 100dvh;
+  /* ✅ Full width, no centering — admin fills 100%, survey centers itself via its own CSS */
 }
 
 button { font-family: var(--font); cursor: pointer; border: none; }
-input, select { font-family: var(--font); }
+input, select, textarea { font-family: var(--font); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -18,7 +18,7 @@ const CARDS: CardDef[] = [
     { id: 'sh1', section: 'Shopping Habits',  type: 'choice', label: 'Where do you usually shop for clothes?',       color: '#7A3010' },
     { id: 'm1',  section: 'Myntra Intent',    type: 'binary', label: 'Were you aware KIABI is on Myntra?',           color: '#444441' },
     { id: 'm2',  section: 'Myntra Intent',    type: 'scale',  label: 'How likely to shop KIABI on Myntra? (1–5)',    color: '#2C2C2A' },
-    { id: 'r1',  section: 'Recommendation',   type: 'scale',  label: 'Would you recommend KIABI to a friend? (0–10)',color: '#185FA5' },
+    { id: 'r1',  section: 'Recommendation',   type: 'scale',  label: 'Would you recommend KIABI to a friend? (1–5)',color: '#185FA5' },
     { id: 'i1',  section: 'Income Range',     type: 'choice', label: 'Monthly household income?',                    color: '#854F0B' },
     { id: 'o1',  section: 'Overall',          type: 'binary', label: 'Would you love KIABI to open a store in your city?', color: '#534AB7' },
 ];
@@ -163,46 +163,9 @@ function HorizBar({ data, total }: { data: HorizItem[]; total: number }) {
     );
 }
 
-/* ─── NPS gauge ─────────────────────────────────────────── */
+/* ─── r1 recommendation is 1–5 scale (same as Myntra) ──────── */
 function NpsGauge({ data }: { data: ScaleItem[] }) {
-    const total = data.reduce((s, d) => s + Number(d.count), 0);
-    const det = data.filter(d => Number(d.answer) <= 6).reduce((s, d) => s + Number(d.count), 0);
-    const pas = data.filter(d => Number(d.answer) >= 7 && Number(d.answer) <= 8).reduce((s, d) => s + Number(d.count), 0);
-    const pro = data.filter(d => Number(d.answer) >= 9).reduce((s, d) => s + Number(d.count), 0);
-    const nps = total ? Math.round(((pro - det) / total) * 100) : 0;
-    const scores = Array.from({ length: 11 }, (_, i) => {
-        const f = data.find(d => Number(d.answer) === i);
-        return { score: i, count: f ? Number(f.count) : 0 };
-    });
-    const maxC = Math.max(...scores.map(s => s.count), 1);
-    const bc = (s: number) => s <= 6 ? '#f44336' : s <= 8 ? '#ff9800' : '#4caf50';
-    const groups = [
-        { l: 'Detractors (0–6)', n: det, c: '#f44336', bg: '#fce4ec' },
-        { l: 'Passives (7–8)',    n: pas, c: '#ff9800', bg: '#fff8e1' },
-        { l: 'Promoters (9–10)', n: pro, c: '#4caf50', bg: '#e8f5e9' },
-        { l: 'NPS Score', n: (nps >= 0 ? '+' : '') + String(nps), c: nps >= 0 ? '#3C3489' : '#f44336', bg: '#eef0fb' },
-    ];
-    return (
-        <div>
-            <div style={{ display: 'flex', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
-                {groups.map(g => (
-                    <div key={g.l} style={{ flex: 1, minWidth: 80, background: g.bg, borderRadius: 10, padding: '10px 12px', textAlign: 'center' }}>
-                        <p style={{ margin: '0 0 2px', fontSize: 10, color: g.c, fontWeight: 700 }}>{g.l}</p>
-                        <p style={{ margin: 0, fontSize: 20, fontWeight: 900, color: g.c }}>{g.n}</p>
-                    </div>
-                ))}
-            </div>
-            <div style={{ display: 'flex', gap: 3, alignItems: 'flex-end', height: 56 }}>
-                {scores.map(s => (
-                    <div key={s.score} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                        <div style={{ width: '100%', background: bc(s.score), borderRadius: '3px 3px 0 0', height: `${(s.count / maxC) * 44}px`, minHeight: s.count > 0 ? 4 : 0, transition: 'height .5s ease' }} />
-                        <span style={{ fontSize: 9, color: '#aaa' }}>{s.score}</span>
-                    </div>
-                ))}
-            </div>
-            <p style={{ margin: '8px 0 0', fontSize: 11, color: '#aaa', textAlign: 'center' }}>{total} responses</p>
-        </div>
-    );
+    return <ScaleBar data={data} min={1} max={5} />;
 }
 
 /* ─── Likert scale bar (1–5) ────────────────────────────── */
@@ -399,9 +362,11 @@ export default function AdminDashboard() {
     );
 
     return (
-        <div style={{ display: 'flex', minHeight: '100vh', background: '#f5f4f0', fontFamily: 'system-ui,-apple-system,sans-serif' }}>
+        <div style={{ display: 'flex', width: '100%', minHeight: '100vh', background: '#f5f4f0', fontFamily: 'system-ui,-apple-system,sans-serif', overflowX: 'hidden' }}>
             <style>{`
-        *{box-sizing:border-box}body{margin:0}
+        *{box-sizing:border-box}
+        body{margin:0!important;display:block!important;justify-content:unset!important;align-items:unset!important;}
+        #root{display:flex!important;width:100%!important;justify-content:unset!important;align-items:unset!important;}
         .desk-sb{display:flex;position:sticky;top:0;height:100vh;flex-shrink:0}
         .mob-ham{display:none!important}
         @media(max-width:767px){.desk-sb{display:none!important}.mob-ham{display:flex!important}}
@@ -488,8 +453,12 @@ export default function AdminDashboard() {
 
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(280px,1fr))', gap: 18 }}>
                             <div style={CARD}>
-                                <p style={ST}>NPS – Recommend KIABI? (0–10)</p>
+                                <p style={ST}>Recommend KIABI? (1–5)</p>
                                 <NpsGauge data={stats.npsScale ?? []} />
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6 }}>
+                                    <span style={{ fontSize: 10, color: '#bbb' }}>Not at all</span>
+                                    <span style={{ fontSize: 10, color: '#bbb' }}>Definitely</span>
+                                </div>
                             </div>
                             <div style={CARD}>
                                 <p style={ST}>Myntra Shopping Likelihood (1–5)</p>
@@ -584,7 +553,13 @@ export default function AdminDashboard() {
                                     )}
 
                                     {c.type === 'scale' && c.id === 'r1' && (
-                                        <NpsGauge data={dist.map(d => ({ answer: d.answer, count: d.count }))} />
+                                        <>
+                                            <NpsGauge data={dist.map(d => ({ answer: d.answer, count: d.count }))} />
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+                                                <span style={{ fontSize: 10, color: '#bbb' }}>Not at all</span>
+                                                <span style={{ fontSize: 10, color: '#bbb' }}>Definitely</span>
+                                            </div>
+                                        </>
                                     )}
                                     {c.type === 'scale' && c.id === 'm2' && (
                                         <>
