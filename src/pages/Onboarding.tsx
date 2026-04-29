@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { UserProfile, Gender, AgeGroup, EmploymentStatus } from '../types';
 
 import styles from './Onboarding.module.css';
-
+import kiabiLogo from '../assets/kiabi_logo.png';
 interface Props {
   onComplete: (profile: UserProfile) => void;
 }
@@ -32,12 +32,18 @@ export default function Onboarding({ onComplete }: Props) {
   return (
       <div className={styles.wrap}>
         <div className={styles.card}>
-          <div className={styles.logo}>KIABI</div>
+          <div className={styles.logoWrap}>
+            <img
+                src={kiabiLogo}
+                alt="KIABI"
+                className={styles.logoImg}
+            />
+          </div>
           <div className={styles.tagline}>Sample Sale — Quick Feedback</div>
 
           <div className={styles.progress}>
             {[0, 1, 2, 3].map(i => (
-                <div key={i} className={`${styles.dot} ${i <= step ? styles.dotActive : ''}`} />
+                <div key={i} className={`${styles.dot} ${i <= step ? styles.dotActive : ''}`}/>
             ))}
           </div>
 
@@ -66,13 +72,21 @@ export default function Onboarding({ onComplete }: Props) {
               <div className={styles.step}>
                 <h2 className={styles.q}>How do you identify?</h2>
                 <div className={styles.chips}>
-                  {(['male','female','non_binary','prefer_not_to_say'] as Gender[]).map(g => (
+                  {(['male', 'female', 'non_binary', 'prefer_not_to_say'] as Gender[]).map(g => (
                       <button
                           key={g}
                           className={`${styles.chip} ${profile.gender === g ? styles.chipActive : ''}`}
-                          onClick={() => { set('gender', g); setTimeout(next, 200); }}
+                          onClick={() => {
+                            set('gender', g);
+                            setTimeout(next, 200);
+                          }}
                       >
-                        {{ male:'Man', female:'Woman', non_binary:'Non-binary', prefer_not_to_say:'Prefer not to say' }[g]}
+                        {{
+                          male: 'Man',
+                          female: 'Woman',
+                          non_binary: 'Non-binary',
+                          prefer_not_to_say: 'Prefer not to say'
+                        }[g]}
                       </button>
                   ))}
                 </div>
@@ -83,11 +97,14 @@ export default function Onboarding({ onComplete }: Props) {
               <div className={styles.step}>
                 <h2 className={styles.q}>Your age group?</h2>
                 <div className={styles.chips}>
-                  {(['13-17','18-24','25-34','35-44','45-54','55+'] as AgeGroup[]).map(a => (
+                  {(['13-17', '18-24', '25-34', '35-44', '45-54', '55+'] as AgeGroup[]).map(a => (
                       <button
                           key={a}
                           className={`${styles.chip} ${profile.ageGroup === a ? styles.chipActive : ''}`}
-                          onClick={() => { set('ageGroup', a); setTimeout(next, 200); }}
+                          onClick={() => {
+                            set('ageGroup', a);
+                            setTimeout(next, 200);
+                          }}
                       >
                         {a}
                       </button>
@@ -100,13 +117,16 @@ export default function Onboarding({ onComplete }: Props) {
               <div className={styles.step}>
                 <h2 className={styles.q}>Your lifestyle?</h2>
                 <div className={styles.chips}>
-                  {(['working','non_working','student','retired'] as EmploymentStatus[]).map(e => (
+                  {(['working', 'non_working', 'student', 'retired'] as EmploymentStatus[]).map(e => (
                       <button
                           key={e}
                           className={`${styles.chip} ${profile.employmentStatus === e ? styles.chipActive : ''}`}
-                          onClick={() => { set('employmentStatus', e); setTimeout(next, 200); }}
+                          onClick={() => {
+                            set('employmentStatus', e);
+                            setTimeout(next, 200);
+                          }}
                       >
-                        {{ working:'Working', non_working:'Not working', student:'Student', retired:'Retired' }[e]}
+                        {{working: 'Working', non_working: 'Not working', student: 'Student', retired: 'Retired'}[e]}
                       </button>
                   ))}
                 </div>
@@ -122,7 +142,10 @@ export default function Onboarding({ onComplete }: Props) {
                     type="text"
                     placeholder="email@example.com or 9876543210"
                     value={contact}
-                    onChange={e => { setContact(e.target.value); setContactError(''); }}
+                    onChange={e => {
+                      setContact(e.target.value);
+                      setContactError('');
+                    }}
                     autoFocus
                 />
                 {contactError && (

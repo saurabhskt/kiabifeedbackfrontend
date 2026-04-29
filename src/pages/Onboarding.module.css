@@ -333,3 +333,33 @@ input, select, textarea { font-family: var(--font); }
     transition-duration: 0.01ms !important;
   }
 }
+/* ── Logo image ── */
+.logoWrap {
+  /* Negative margin pulls the logo flush to the card edges,
+     then padding inside gives it breathing room.
+     This makes it appear wider than the content area
+     without growing the card at all. */
+  margin: -2rem -1.5rem 0;             /* undo card padding on 3 sides */
+  padding: 1.25rem 1.5rem 1rem;        /* re-add controlled spacing */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;        /* match card top corners */
+}
+
+.logoImg {
+  /* Fill the full available width of the logoWrap.
+     max-height keeps the card from growing — the image
+     scales down proportionally inside the fixed height. */
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 72px;
+  object-fit: contain;
+  object-position: center center;
+  display: block;
+  /* The logo PNG has a transparent/dark background;
+     mix-blend-mode lets it sit cleanly on white */
+  mix-blend-mode: multiply;
+}

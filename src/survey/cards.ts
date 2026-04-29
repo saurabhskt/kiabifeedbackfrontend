@@ -124,8 +124,8 @@ export const SURVEY_CARDS: SurveyCard[] = [
     id: 'r1', section: 'Recommendation', sectionColor: '#85B7EB', bg: '#185FA5',
     emoji: '📣',
     type: 'scale',
-    scaleMin: 0,
-    scaleMax: 10,
+    scaleMin: 1,
+    scaleMax: 5,
     scaleLabels: ['Not at all', 'Definitely'],
     statement: 'Would you recommend KIABI to a friend or colleague?',
   },
@@ -149,7 +149,7 @@ export const SURVEY_CARDS: SurveyCard[] = [
   {
     id: 'o1', section: 'Overall', sectionColor: '#AFA9EC', bg: '#534AB7',
     emoji: '🏬',
-    statement: 'Would you love for KIABI to open a store in your city?',
+    statement: 'Would you like for KIABI to open a store in your city?',
   },
 ];
 
