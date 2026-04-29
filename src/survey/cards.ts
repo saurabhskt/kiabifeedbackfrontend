@@ -30,52 +30,22 @@ export const SURVEY_CARDS: SurveyCard[] = [
 
   // ── DISCOVERY ────────────────────────────────────────────────────
   {
-    id: 'd1', section: 'Discovery', sectionColor: '#AFA9EC', bg: '#3C3489',
-    emoji: '📱',
+    id: 's1', section: 'Sections Shopped', sectionColor: '#AFA9EC', bg: '#3C3489',
+    emoji: '👗',
     type: 'choice',
     multiSelect: true,
-    statement: 'How did you hear about this sale? (tick all that apply)',
+    statement: 'Which sections did you shop today? (tick all that apply)?',
     options: [
-      { value: 'whatsapp',   label: 'WhatsApp from a colleague or friend' },
-      { value: 'instagram',  label: 'KIABI India\'s Instagram / social media' },
-      { value: 'office',     label: 'Notice at Vatika Business Park / office board' },
-      { value: 'banner',     label: 'Poster or banner outside' },
-      { value: 'kiabi_team', label: 'Personally invited by the KIABI team' },
-      { value: 'other',      label: 'Other', isOther: true },
+      { value: 'women',   label: 'Women' },
+      { value: 'men',  label: 'Men' },
+      { value: 'girl',     label: 'Kids(Girl)' },
+      { value: 'boy',     label: 'Kids(Boy)' },
+      { value: 'new_born', label: 'Baby/Newborn' },
+      { value: 'just_browsing',      label: 'Just browsing'},
     ],
   },
 
-  // ── SECTIONS SHOPPED ─────────────────────────────────────────────
-  {
-    id: 's1', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#993556',
-    emoji: '👀',
-    statement: 'Were you mostly just browsing today?',
-  },
-  {
-    id: 's2', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#72243E',
-    emoji: '👗',
-    statement: 'Did you shop from the Women\'s section today?',
-  },
-  {
-    id: 's3', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#040037',
-    emoji: '👔',
-    statement: 'Did you browse or buy from the Men\'s section?',
-  },
-  {
-    id: 's4', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#040037',
-    emoji: '👧',
-    statement: 'Did you pick up anything from the Kids\' Girls section?',
-  },
-  {
-    id: 's5', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#040037',
-    emoji: '👦',
-    statement: 'Did you shop from the Kids\' Boys section?',
-  },
-  {
-    id: 's6', section: 'Sections Shopped', sectionColor: '#ED93B1', bg: '#4B1528',
-    emoji: '👶',
-    statement: 'Did you pick up anything from the Baby or Newborn section?',
-  },
+
 
   // ── BRAND AWARENESS ──────────────────────────────────────────────
   {
@@ -159,11 +129,6 @@ export const SURVEY_CARDS: SurveyCard[] = [
     scaleLabels: ['Not at all', 'Definitely'],
     statement: 'Would you recommend KIABI to a friend or colleague?',
   },
-  {
-    id: 'r2', section: 'Recommendation', sectionColor: '#85B7EB', bg: '#0C447C',
-    emoji: '🔄',
-    statement: 'Would you come back to the next KIABI sample sale?',
-  },
 
   // ── INCOME RANGE ─────────────────────────────────────────────────
   {
@@ -173,25 +138,18 @@ export const SURVEY_CARDS: SurveyCard[] = [
     multiSelect: false,
     statement: 'What is your approximate monthly household income? (optional)',
     options: [
-      { value: 'below_50k',  label: 'Below ₹50,000' },
-      { value: '50k_1L',     label: '₹50,000 – ₹1,00,000' },
-      { value: '1L_2L',      label: '₹1,00,000 – ₹2,00,000' },
-      { value: '2L_3.5L',    label: '₹2,00,000 – ₹3,50,000' },
-      { value: 'above_3.5L', label: 'Above ₹3,50,000' },
+        { value: 'under_5L',    label: 'Under ₹5,00,000' },
+      { value: 'above_5L', label: 'Above ₹5,00,000' },
       { value: 'prefer_not', label: 'Prefer not to say' },
     ],
   },
 
   // ── OVERALL ──────────────────────────────────────────────────────
+
   {
-    id: 'o1', section: 'Overall', sectionColor: '#AFA9EC', bg: '#3C3489',
-    emoji: '⭐',
-    statement: 'Did today\'s KIABI sample sale meet your overall expectations?',
-  },
-  {
-    id: 'o2', section: 'Overall', sectionColor: '#AFA9EC', bg: '#534AB7',
+    id: 'o1', section: 'Overall', sectionColor: '#AFA9EC', bg: '#534AB7',
     emoji: '🏬',
-    statement: 'Would you love for KIABI to open a permanent store in your city?',
+    statement: 'Would you love for KIABI to open a store in your city?',
   },
 ];
 
